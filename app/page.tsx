@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
-import { getMessaging, getToken } from "firebase/messaging"
+import { getMessaging, getToken, onMessage } from "firebase/messaging"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
@@ -10,25 +10,10 @@ import firebase from "firebase/app"
 export default function Home() {
 	const [show, setShow] = useState(false)
 
-	// const onMessageListener = () =>
-	// 	new Promise((resolve) => {
-	// 		onMessage(messaging, (payload) => {
-	// 			resolve(payload)
-	// 		})
-	// 	})
-
 	useEffect(() => {
 		if ("serviceWorker" in navigator) {
 			navigator.serviceWorker.register("/firebase-messaging-sw.js").then((registration) => console.log("scope is: ", registration.scope))
 		}
-
-		// onMessageListener()
-		// 	.then((payload) => {
-		// 		setShow(true)
-		// 		// setNotification({title: payload.notification.title, body: payload.notification.body})
-		// 		console.log("payload", payload)
-		// 	})
-		// 	.catch((err) => console.log("failed: ", err))
 	}, [])
 
 	useEffect(() => {
@@ -45,6 +30,11 @@ export default function Home() {
 		const app = initializeApp(firebaseConfig)
 
 		const messaging = getMessaging(app)
+
+		onMessage(messaging, (payload) => {
+			console.log("Message received. ", payload)
+			// ...
+		})
 
 		console.log("messging", messaging)
 
