@@ -10,10 +10,25 @@ import firebase from "firebase/app"
 export default function Home() {
 	const [show, setShow] = useState(false)
 
+	// const onMessageListener = () =>
+	// 	new Promise((resolve) => {
+	// 		onMessage(messaging, (payload) => {
+	// 			resolve(payload)
+	// 		})
+	// 	})
+
 	useEffect(() => {
 		if ("serviceWorker" in navigator) {
-			navigator.serviceWorker.register("/service-worker.js", { scope: "/docs" }).then((registration) => console.log("scope is: ", registration.scope))
+			navigator.serviceWorker.register("/firebase-messaging-sw.js").then((registration) => console.log("scope is: ", registration.scope))
 		}
+
+		// onMessageListener()
+		// 	.then((payload) => {
+		// 		setShow(true)
+		// 		// setNotification({title: payload.notification.title, body: payload.notification.body})
+		// 		console.log("payload", payload)
+		// 	})
+		// 	.catch((err) => console.log("failed: ", err))
 	}, [])
 
 	useEffect(() => {
